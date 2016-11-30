@@ -1,0 +1,16 @@
+<resources>
+    <string name="app_name">AgendaApp</string>
+    <string name="nome">Nome </string>
+    <string name="apelido">Apelido </string>
+    <string name="dtNasc">Data de Nascimento </string>
+    <string name="telefone">Fone </string>
+    <string name="tipo">Tipo </string>
+    <string name="email">Email </string>
+    <array name="tipofone"></array>
+    <string name="salvar">Adicionar Contato</string>
+    <string name="excluir">Excluir</string>
+    <string name="consultar">Consultar</string>
+    <string name="listar">Listar</string>
+    <string name="alterar">Alterar</string>
+    <string name="buscar">Buscar</string>
+</resources>
