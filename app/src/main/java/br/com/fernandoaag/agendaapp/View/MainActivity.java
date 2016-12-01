@@ -29,6 +29,7 @@ public class MainActivity extends AppCompatActivity {
     private static final String TAG = MainActivity.class.getSimpleName();
     private RecyclerView recyclerView;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -42,8 +43,9 @@ public class MainActivity extends AppCompatActivity {
     private void initViews(){
         recyclerView = (RecyclerView) findViewById(R.id.recycler);
         recyclerView.setHasFixedSize(true);
-        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getApplicationContext());
+        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(layoutManager);
+
         chamaLista();
     }
 
@@ -56,6 +58,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onResponse(Call<List<Contatos>> call, Response<List<Contatos>> response) {
                 List<Contatos> contatosList = response.body();
+
                 recyclerView.setAdapter(new ContatosAdapter(contatosList, R.layout.list_item_contato, getApplicationContext()));
             }
 

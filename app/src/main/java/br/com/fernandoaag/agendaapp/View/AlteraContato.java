@@ -20,7 +20,13 @@ public class AlteraContato extends AppCompatActivity {
         EditText edtNome = (EditText) findViewById(R.id.edtAltNome);
 
         Intent intent = getIntent();
+        int idContato = Integer.valueOf(intent.getStringExtra("idContato"));
         String nome = intent.getStringExtra("nome");
+        String apelido = intent.getStringExtra("apelido");
+        String dtNasc = intent.getStringExtra("dtNasc");
+        String telefone = intent.getStringExtra("telefone");
+        String tipo = intent.getStringExtra("tipo");
+        String email = intent.getStringExtra("email");
 
         edtNome.setText(nome);
     }
