@@ -8,14 +8,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
-
 import java.util.List;
-
 import br.com.fernandoaag.agendaapp.R;
 import br.com.fernandoaag.agendaapp.View.AlteraContato;
-import br.com.fernandoaag.agendaapp.View.BuscaPessoa;
-import br.com.fernandoaag.agendaapp.View.MainActivity;
 import br.com.fernandoaag.agendaapp.model.Contatos;
 
 /**

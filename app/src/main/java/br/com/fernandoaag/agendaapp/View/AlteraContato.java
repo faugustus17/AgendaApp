@@ -51,13 +51,13 @@ public class AlteraContato extends AppCompatActivity {
         edtApelido.setText(apelido);
         edtDtNasc.setText(dtNasc);
         edtTelefone.setText(telefone);
-        if(tipo == "SELECIONE"){
+        if(tipo.equals("SELECIONE")){
             spnTipo.setSelection(0);
-        }else if (tipo =="Celular"){
+        }else if (tipo.equals("Celular")){
            spnTipo.setSelection(1);
-        }else if (tipo == "Comercial"){
+        }else if (tipo.equals("Comercial")){
             spnTipo.setSelection(2);
-        }else if (tipo == "Residencial") {
+        }else if (tipo.equals("Residencial")){
             spnTipo.setSelection(3);
         }
         edtEmail.setText(email);
