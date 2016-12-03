@@ -11,10 +11,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.Toast;
-
-import java.io.IOException;
 import java.util.List;
-
 import br.com.fernandoaag.agendaapp.R;
 import br.com.fernandoaag.agendaapp.adapter.ContatosAdapter;
 import br.com.fernandoaag.agendaapp.model.Contatos;
@@ -27,43 +24,37 @@ import retrofit2.Response;
 public class MainActivity extends AppCompatActivity {
 
     private static final String TAG = MainActivity.class.getSimpleName();
-    private RecyclerView recyclerView;
-
+    RecyclerView recyclerView;
+    RecyclerView.LayoutManager layoutManager;
+    ContatosAdapter adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        initViews();
         addListenerOnButtonConsultar();
         addListenerOnButtonNovo();
-    }
 
-    private void initViews(){
         recyclerView = (RecyclerView) findViewById(R.id.recycler);
-        recyclerView.setHasFixedSize(true);
-        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this);
+        layoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(layoutManager);
 
-        chamaLista();
-    }
-
-    private void chamaLista(){
         final ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
 
-            Call<List<Contatos>> call = apiService.listaContatos();
+        Call<List<Contatos>> call = apiService.listaContatos();
 
-            call.enqueue(new Callback<List<Contatos>>() {
+        call.enqueue(new Callback<List<Contatos>>() {
             @Override
             public void onResponse(Call<List<Contatos>> call, Response<List<Contatos>> response) {
                 List<Contatos> contatosList = response.body();
-
-                recyclerView.setAdapter(new ContatosAdapter(contatosList, R.layout.list_item_contato, getApplicationContext()));
+                adapter = new ContatosAdapter(getApplicationContext(), contatosList);
+                recyclerView.setAdapter(adapter);
             }
 
             @Override
             public void onFailure(Call<List<Contatos>> call, Throwable t) {
+                alert(toString());
                 Log.e(TAG, toString());
             }
         });

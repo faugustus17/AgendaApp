@@ -87,7 +87,7 @@ public class AlteraContato extends AppCompatActivity {
         btnSubmit.setOnClickListener(new View.OnClickListener(){
             public void onClick(View v){
                 Toast.makeText(getBaseContext(), "Item Selecionado: "+ String.valueOf(spinner.getSelectedItem()), Toast.LENGTH_SHORT).show();
-                //armazena a descrição e o codigo da uf selecionada nas preferencias do usuario
+                //armazena a descrição e o codigo do tipo de telefone selecionado nas preferencias do usuario
                 PrefUtil.setString(getBaseContext(), "Tipo.des", String.valueOf(spinner.getSelectedItem()));
                 PrefUtil.setInteger(getBaseContext(), "Tipo.cod", spinner.getSelectedItemPosition());
 
