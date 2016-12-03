@@ -17,10 +17,6 @@ import java.util.List;
 import br.com.fernandoaag.agendaapp.R;
 import br.com.fernandoaag.agendaapp.Utils.PrefUtil;
 
-/**
- * Created by Nando on 30/11/2016.
- */
-
 public class AlteraContato extends AppCompatActivity {
     private static final String TAG = AlteraContato.class.getSimpleName();
 

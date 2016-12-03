@@ -12,10 +12,6 @@ import retrofit2.http.PUT;
 import retrofit2.http.Path;
 
 
-/**
- * Created by Nando on 23/11/2016.
- */
-
 public interface ApiInterface {
     @GET("listaContatos")
     Call<List<Contatos>> listaContatos();

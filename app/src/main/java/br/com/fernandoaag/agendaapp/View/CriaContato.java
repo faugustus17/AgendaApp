@@ -10,12 +10,9 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Toast;
-
 import java.util.ArrayList;
 import java.util.List;
-
 import br.com.fernandoaag.agendaapp.R;
-import br.com.fernandoaag.agendaapp.Utils.PhoneEditText;
 import br.com.fernandoaag.agendaapp.Utils.PrefUtil;
 import br.com.fernandoaag.agendaapp.model.Contatos;
 import br.com.fernandoaag.agendaapp.rest.ApiClient;
@@ -23,10 +20,6 @@ import br.com.fernandoaag.agendaapp.rest.ApiInterface;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
-
-/**
- * Created by Nando on 25/11/2016.
- */
 
 public class CriaContato extends AppCompatActivity{
     private static final String TAG = CriaContato.class.getSimpleName();
@@ -134,7 +127,6 @@ public class CriaContato extends AppCompatActivity{
     }
 
     private String data(String data){
-        String novadata = (data.substring(6,10)+"-"+data.substring(3,5)+"-"+data.substring(0,2));
-        return novadata;
+        return (data.substring(6,10)+"-"+data.substring(3,5)+"-"+data.substring(0,2));
     }
 }
