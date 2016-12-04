@@ -16,24 +16,37 @@ import java.util.List;
 
 import br.com.fernandoaag.agendaapp.R;
 import br.com.fernandoaag.agendaapp.Utils.PrefUtil;
+import br.com.fernandoaag.agendaapp.model.Contatos;
+import br.com.fernandoaag.agendaapp.rest.ApiClient;
+import br.com.fernandoaag.agendaapp.rest.ApiInterface;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class AlteraContato extends AppCompatActivity {
     private static final String TAG = AlteraContato.class.getSimpleName();
+    private EditText edtNome;
+    private EditText edtApelido;
+    private EditText edtDtNasc;
+    private EditText edtTelefone;
+    private Spinner spnTipo;
+    private EditText edtEmail;
+    private String idContato;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_altera);
 
-        EditText edtNome = (EditText) findViewById(R.id.edtAltNome);
-        EditText edtApelido = (EditText) findViewById(R.id.edtAltApelido);
-        EditText edtDtNasc = (EditText) findViewById(R.id.edtAltDtNasc);
-        EditText edtTelefone = (EditText) findViewById(R.id.edtAltTelefone);
-        Spinner spnTipo = (Spinner) findViewById(R.id.spnALtTipo);
-        EditText edtEmail = (EditText) findViewById(R.id.edtAltEmail);
+        edtNome = (EditText) findViewById(R.id.edtAltNome);
+        edtApelido = (EditText) findViewById(R.id.edtAltApelido);
+        edtDtNasc = (EditText) findViewById(R.id.edtAltDtNasc);
+        edtTelefone = (EditText) findViewById(R.id.edtAltTelefone);
+        spnTipo = (Spinner) findViewById(R.id.spnALtTipo);
+        edtEmail = (EditText) findViewById(R.id.edtAltEmail);
 
         Intent intent = getIntent();
-        String idContato = intent.getStringExtra("idContato");
+        String id = intent.getStringExtra("idContato");
         String nome = intent.getStringExtra("nome");
         String apelido = intent.getStringExtra("apelido");
         String dtNasc = intent.getStringExtra("dtNasc");
@@ -45,7 +58,7 @@ public class AlteraContato extends AppCompatActivity {
 
         edtNome.setText(nome);
         edtApelido.setText(apelido);
-        edtDtNasc.setText(dtNasc);
+        edtDtNasc.setText(data2(dtNasc));
         edtTelefone.setText(telefone);
         if(tipo.equals("SELECIONE")){
             spnTipo.setSelection(0);
@@ -58,7 +71,70 @@ public class AlteraContato extends AppCompatActivity {
         }
         edtEmail.setText(email);
 
+        idContato = id;
+
         addListenerOnButtonSalvarPreferencias();
+
+        addListenerOnButtonAlterar();
+        addListenerOnButtonExcluir();
+    }
+
+    private void addListenerOnButtonAlterar() {
+        Button btnAlterar = (Button) findViewById(R.id.btnAlterar);
+        btnAlterar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (edtNome.length() == 0 || edtTelefone.length() == 0 || spnTipo.getSelectedItem() == "SELECIONE") {
+                    alert("Campos NOME, TELEFONE E TIPO não podem ser vazios");
+                } else {
+                    Contatos c = new Contatos();
+                    c.setIdContato(Integer.valueOf(idContato));
+                    c.setNome(edtNome.getText().toString());
+                    c.setApelido(edtApelido.getText().toString());
+                    c.setDtNasc(data(edtDtNasc.getText().toString()));
+                    c.setTelefone(edtTelefone.getText().toString());
+                    c.setTipo(spnTipo.getSelectedItem().toString());
+                    c.setEmail(edtEmail.getText().toString());
+
+                    ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
+                    Call<Contatos> call = apiService.alteraContato(c);
+                    call.enqueue(new Callback<Contatos>() {
+                        @Override
+                        public void onResponse(Call<Contatos> call, Response<Contatos> response) {
+
+                        }
+
+                        @Override
+                        public void onFailure(Call<Contatos> call, Throwable t) {
+
+                        }
+                    });
+                    call.cancel();
+                }
+            }
+        });
+    }
+
+    private void addListenerOnButtonExcluir() {
+        Button btnExcluir = (Button) findViewById(R.id.btnExcluir);
+        btnExcluir.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
+                Call<Contatos> call = apiService.delContato(Integer.valueOf(idContato));
+                call.enqueue(new Callback<Contatos>() {
+                    @Override
+                    public void onResponse(Call<Contatos> call, Response<Contatos> response) {
+
+                    }
+
+                    @Override
+                    public void onFailure(Call<Contatos> call, Throwable t) {
+
+                    }
+                });
+            }
+        });
     }
 
     private void carregarTipo() {
@@ -92,4 +168,21 @@ public class AlteraContato extends AppCompatActivity {
             }
         });
     }
+
+    private String data(String data){
+        return (data.substring(6,10)+"-"+data.substring(3,5)+"-"+data.substring(0,2));
+    }
+
+    public String data2(String data){
+        return (data.substring(7,10)+data.substring(5,7)+data.substring(0,4));
+    }
+
+    /**
+     * Método para gerar alertas ao usuario
+     */
+    private void alert(String s) {
+        Toast.makeText(this, s, Toast.LENGTH_SHORT).show();
+    }
+
+
 }

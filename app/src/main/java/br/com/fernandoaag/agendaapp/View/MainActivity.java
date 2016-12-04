@@ -37,7 +37,7 @@ public class MainActivity extends AppCompatActivity {
         addListenerOnButtonNovo();
 
         recyclerView = (RecyclerView) findViewById(R.id.recycler);
-        layoutManager = new LinearLayoutManager(this);
+        layoutManager = new LinearLayoutManager(getApplicationContext());
         recyclerView.setLayoutManager(layoutManager);
 
         final ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
@@ -48,6 +48,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onResponse(Call<List<Contatos>> call, Response<List<Contatos>> response) {
                 List<Contatos> contatosList = response.body();
+
                 adapter = new ContatosAdapter(getApplicationContext(), contatosList);
                 recyclerView.setAdapter(adapter);
             }
@@ -58,6 +59,7 @@ public class MainActivity extends AppCompatActivity {
                 Log.e(TAG, toString());
             }
         });
+        call.cancel();
     }
 
     private void addListenerOnButtonConsultar() {
