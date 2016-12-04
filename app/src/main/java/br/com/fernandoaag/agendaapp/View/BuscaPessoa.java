@@ -37,9 +37,6 @@ public class BuscaPessoa extends AppCompatActivity {
 
         ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
 
-
-
-
         Call<List<Contatos>> call = apiService.listaContatoNome(nome);
         call.enqueue(new Callback<List<Contatos>>() {
             @Override
@@ -53,9 +50,5 @@ public class BuscaPessoa extends AppCompatActivity {
                 Log.e(TAG, toString());
             }
         });
-
-        //addListenerOnButtonConsultar();
-
     }
-
 }

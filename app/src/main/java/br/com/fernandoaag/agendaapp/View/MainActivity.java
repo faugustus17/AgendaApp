@@ -59,7 +59,7 @@ public class MainActivity extends AppCompatActivity {
                 Log.e(TAG, toString());
             }
         });
-        call.cancel();
+        //call.cancel();
     }
 
     private void addListenerOnButtonConsultar() {

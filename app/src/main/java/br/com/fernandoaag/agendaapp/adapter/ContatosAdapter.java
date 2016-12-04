@@ -40,7 +40,7 @@ public class ContatosAdapter extends RecyclerView.Adapter<ContatosAdapter.Contat
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                int idContato = contatosList.get(position).getIdContato();
+                String idContato = String.valueOf(contatosList.get(position).getIdContato());
                 String nome = (contatosList.get(position).getNome());
                 String apelido = (contatosList.get(position).getApelido());
                 String dtNasc = (contatosList.get(position).getDtNasc());

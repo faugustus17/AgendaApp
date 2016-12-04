@@ -73,6 +73,8 @@ public class AlteraContato extends AppCompatActivity {
 
         idContato = id;
 
+        alert(idContato+" "+nome);
+
         addListenerOnButtonSalvarPreferencias();
 
         addListenerOnButtonAlterar();
@@ -88,7 +90,7 @@ public class AlteraContato extends AppCompatActivity {
                     alert("Campos NOME, TELEFONE E TIPO não podem ser vazios");
                 } else {
                     Contatos c = new Contatos();
-                    c.setIdContato(Integer.valueOf(idContato));
+                    c.setIdContato(Integer.parseInt(idContato));
                     c.setNome(edtNome.getText().toString());
                     c.setApelido(edtApelido.getText().toString());
                     c.setDtNasc(data(edtDtNasc.getText().toString()));
@@ -109,7 +111,7 @@ public class AlteraContato extends AppCompatActivity {
 
                         }
                     });
-                    call.cancel();
+                    //call.cancel();
                 }
             }
         });
