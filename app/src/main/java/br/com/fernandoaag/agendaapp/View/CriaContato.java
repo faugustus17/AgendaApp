@@ -78,7 +78,6 @@ public class CriaContato extends AppCompatActivity{
 
                         }
                     });
-                    //call.cancel();
                 }
                 Intent intent = new Intent(CriaContato.this, MainActivity.class);
                 startActivity(intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP));

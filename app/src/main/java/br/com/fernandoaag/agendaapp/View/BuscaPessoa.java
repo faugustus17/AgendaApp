@@ -17,9 +17,6 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-/**
- * Created by Nando on 25/11/2016.
- */
 public class BuscaPessoa extends AppCompatActivity {
 
     private static final String TAG = MainActivity.class.getSimpleName();

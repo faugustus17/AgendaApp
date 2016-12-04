@@ -61,15 +61,6 @@ public class AlteraContato extends AppCompatActivity {
         edtApelido.setText(apelido);
         edtDtNasc.setText(data2(dtNasc));
         edtTelefone.setText(telefone);
-        if(tipo.equals("SELECIONE")){
-            spnTipo.setSelection(0);
-        }else if (tipo.equals("Celular")){
-           spnTipo.setSelection(1);
-        }else if (tipo.equals("Comercial")){
-            spnTipo.setSelection(2);
-        }else if (tipo.equals("Residencial")){
-            spnTipo.setSelection(3);
-        }
         edtEmail.setText(email);
 
         addListenerOnButtonSalvarPreferencias();
@@ -146,15 +137,18 @@ public class AlteraContato extends AppCompatActivity {
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinner.setAdapter(adapter);
         //int sel = PrefUtil.getInteger(getBaseContext(), "Tipo.cod");
-        int sel=0;
-        if(tipo.equals("SELECIONE")){
-            sel = 0;
-        }else if (tipo.equals("Celular")){
-            sel = 1;
-        }else if (tipo.equals("Comercial")){
-            sel = 2;
-        }else if (tipo.equals("Residencial")){
-            sel = 3;
+        int sel;
+        switch (tipo){
+            case "SELECIONE":sel = 0;
+                break;
+            case "Celular":sel = 1;
+                break;
+            case "Comercial":sel = 2;
+                break;
+            case "Residencial":sel = 3;
+                break;
+            default:sel = 0;
+                break;
         }
         spinner.setSelection(sel);
     }

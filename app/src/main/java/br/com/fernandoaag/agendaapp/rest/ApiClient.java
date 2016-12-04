@@ -1,6 +1,5 @@
 package br.com.fernandoaag.agendaapp.rest;
 
-
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
@@ -14,8 +13,8 @@ public class ApiClient {
                     .baseUrl(BASE_URL)
                     .addConverterFactory(GsonConverterFactory.create())
                     .build();
+            }
+            return retrofit;
         }
-        return retrofit;
-    }
 }
 

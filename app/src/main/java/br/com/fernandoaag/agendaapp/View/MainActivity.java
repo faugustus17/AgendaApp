@@ -47,19 +47,27 @@ public class MainActivity extends AppCompatActivity {
         call.enqueue(new Callback<List<Contatos>>() {
             @Override
             public void onResponse(Call<List<Contatos>> call, Response<List<Contatos>> response) {
+                if (response.isSuccessful()){
                 List<Contatos> contatosList = response.body();
-
                 adapter = new ContatosAdapter(getApplicationContext(), contatosList);
                 recyclerView.setAdapter(adapter);
+                }else{
+                    String str=response.errorBody().toString();
+                    alert(str);
+                }
             }
 
             @Override
             public void onFailure(Call<List<Contatos>> call, Throwable t) {
                 alert(toString());
+                final String str=t.getMessage();
+
+                alert(str);
+
                 Log.e(TAG, toString());
             }
         });
-        //call.cancel();
+
     }
 
     private void addListenerOnButtonConsultar() {
