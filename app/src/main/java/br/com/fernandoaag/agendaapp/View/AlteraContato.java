@@ -32,6 +32,7 @@ public class AlteraContato extends AppCompatActivity {
     private Spinner spnTipo;
     private EditText edtEmail;
     private String idContato;
+    private String tipo;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,12 +47,12 @@ public class AlteraContato extends AppCompatActivity {
         edtEmail = (EditText) findViewById(R.id.edtAltEmail);
 
         Intent intent = getIntent();
-        String id = intent.getStringExtra("idContato");
+        idContato = intent.getStringExtra("idContato");
         String nome = intent.getStringExtra("nome");
         String apelido = intent.getStringExtra("apelido");
         String dtNasc = intent.getStringExtra("dtNasc");
         String telefone = intent.getStringExtra("telefone");
-        String tipo = intent.getStringExtra("tipo");
+        tipo = intent.getStringExtra("tipo");
         String email = intent.getStringExtra("email");
 
         carregarTipo();
@@ -71,12 +72,7 @@ public class AlteraContato extends AppCompatActivity {
         }
         edtEmail.setText(email);
 
-        idContato = id;
-
-        alert(idContato+" "+nome);
-
         addListenerOnButtonSalvarPreferencias();
-
         addListenerOnButtonAlterar();
         addListenerOnButtonExcluir();
     }
@@ -111,7 +107,6 @@ public class AlteraContato extends AppCompatActivity {
 
                         }
                     });
-                    //call.cancel();
                 }
             }
         });
@@ -150,7 +145,17 @@ public class AlteraContato extends AppCompatActivity {
         ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, list);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinner.setAdapter(adapter);
-        int sel = PrefUtil.getInteger(getBaseContext(), "Tipo.cod");
+        //int sel = PrefUtil.getInteger(getBaseContext(), "Tipo.cod");
+        int sel=0;
+        if(tipo.equals("SELECIONE")){
+            sel = 0;
+        }else if (tipo.equals("Celular")){
+            sel = 1;
+        }else if (tipo.equals("Comercial")){
+            sel = 2;
+        }else if (tipo.equals("Residencial")){
+            sel = 3;
+        }
         spinner.setSelection(sel);
     }
 
