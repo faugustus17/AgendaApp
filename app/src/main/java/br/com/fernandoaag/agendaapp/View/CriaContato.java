@@ -78,13 +78,12 @@ public class CriaContato extends AppCompatActivity{
 
                         }
                     });
+                    Intent intent = new Intent(CriaContato.this, MainActivity.class);
+                    startActivity(intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP));
                 }
-                Intent intent = new Intent(CriaContato.this, MainActivity.class);
-                startActivity(intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP));
-            }
+                  }
 
         });
-
     }
 
     private void carregarTipo() {

@@ -48,9 +48,9 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onResponse(Call<List<Contatos>> call, Response<List<Contatos>> response) {
                 if (response.isSuccessful()){
-                List<Contatos> contatosList = response.body();
-                adapter = new ContatosAdapter(getApplicationContext(), contatosList);
-                recyclerView.setAdapter(adapter);
+                    List<Contatos> contatosList = response.body();
+                    adapter = new ContatosAdapter(getApplicationContext(), contatosList);
+                    recyclerView.setAdapter(adapter);
                 }else{
                     String str=response.errorBody().toString();
                     alert(str);

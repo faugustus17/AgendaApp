@@ -90,14 +90,20 @@ public class AlteraContato extends AppCompatActivity {
                     call.enqueue(new Callback<Contatos>() {
                         @Override
                         public void onResponse(Call<Contatos> call, Response<Contatos> response) {
-
+                            if (response.isSuccessful()) {
+                                alert("Alteração do contato feito com sucesso!");
+                            }else{
+                                alert("Falha ao alterar: "+response.errorBody());
+                            }
                         }
 
                         @Override
                         public void onFailure(Call<Contatos> call, Throwable t) {
-
+                            alert(t.getMessage());
                         }
                     });
+                    Intent intent = new Intent(AlteraContato.this, MainActivity.class);
+                    startActivity(intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP));
                 }
             }
         });
@@ -113,12 +119,16 @@ public class AlteraContato extends AppCompatActivity {
                 call.enqueue(new Callback<Contatos>() {
                     @Override
                     public void onResponse(Call<Contatos> call, Response<Contatos> response) {
-
+                        if (response.isSuccessful()) {
+                            alert("Alteração do contato feito com sucesso!");
+                        }else{
+                            alert("Falha ao alterar: "+response.errorBody());
+                        }
                     }
 
                     @Override
                     public void onFailure(Call<Contatos> call, Throwable t) {
-
+                        alert(t.getMessage());
                     }
                 });
             }
