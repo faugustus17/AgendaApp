@@ -9,7 +9,7 @@ import android.util.Log;
 import java.util.List;
 
 import br.com.fernandoaag.agendaapp.R;
-import br.com.fernandoaag.agendaapp.adapter.BuscaAdapter;
+import br.com.fernandoaag.agendaapp.adapter.ContatosAdapter;
 import br.com.fernandoaag.agendaapp.model.Contatos;
 import br.com.fernandoaag.agendaapp.rest.ApiClient;
 import br.com.fernandoaag.agendaapp.rest.ApiInterface;
@@ -39,7 +39,8 @@ public class BuscaPessoa extends AppCompatActivity {
             @Override
             public void onResponse(Call<List<Contatos>> call, Response<List<Contatos>> response) {
                 List<Contatos> contato = response.body();
-                recyclerView.setAdapter(new BuscaAdapter(contato, R.layout.list_item_contato, getApplicationContext()));
+                recyclerView.setAdapter(new ContatosAdapter(contato));
+                //recyclerView.setAdapter(new BuscaAdapter(contato, R.layout.list_item_contato, getApplicationContext()));
             }
 
             @Override

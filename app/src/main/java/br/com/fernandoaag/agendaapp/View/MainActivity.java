@@ -24,20 +24,19 @@ import retrofit2.Response;
 public class MainActivity extends AppCompatActivity {
 
     private static final String TAG = MainActivity.class.getSimpleName();
-    RecyclerView recyclerView;
-    RecyclerView.LayoutManager layoutManager;
-    ContatosAdapter adapter;
+    private RecyclerView recyclerView;
+    private RecyclerView.LayoutManager layoutManager;
+    private ContatosAdapter adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        addListenerOnButtonConsultar();
-        addListenerOnButtonNovo();
-
         recyclerView = (RecyclerView) findViewById(R.id.recycler);
-        layoutManager = new LinearLayoutManager(getApplicationContext());
+        recyclerView.setHasFixedSize(true);
+
+        layoutManager = new LinearLayoutManager(this /*getApplicationContext()*/);
         recyclerView.setLayoutManager(layoutManager);
 
         final ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
@@ -47,14 +46,10 @@ public class MainActivity extends AppCompatActivity {
         call.enqueue(new Callback<List<Contatos>>() {
             @Override
             public void onResponse(Call<List<Contatos>> call, Response<List<Contatos>> response) {
-                if (response.isSuccessful()){
-                    List<Contatos> contatosList = response.body();
-                    adapter = new ContatosAdapter(getApplicationContext(), contatosList);
-                    recyclerView.setAdapter(adapter);
-                }else{
-                    String str=response.errorBody().toString();
-                    alert(str);
-                }
+                List<Contatos> contatosList = response.body();
+                    //adapter = new ContatosAdapter(getApplicationContext(), contatosList);
+                adapter = new ContatosAdapter(contatosList);
+                recyclerView.setAdapter(adapter);
             }
 
             @Override
@@ -67,6 +62,9 @@ public class MainActivity extends AppCompatActivity {
                 Log.e(TAG, toString());
             }
         });
+
+        addListenerOnButtonConsultar();
+        addListenerOnButtonNovo();
 
     }
 

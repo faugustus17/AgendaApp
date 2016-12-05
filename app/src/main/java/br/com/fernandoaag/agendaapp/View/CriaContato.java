@@ -79,6 +79,7 @@ public class CriaContato extends AppCompatActivity{
                         }
                     });
                     Intent intent = new Intent(CriaContato.this, MainActivity.class);
+                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                     startActivity(intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP));
                 }
                   }
