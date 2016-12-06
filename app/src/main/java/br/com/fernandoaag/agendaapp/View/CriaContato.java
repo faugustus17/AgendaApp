@@ -3,6 +3,7 @@ package br.com.fernandoaag.agendaapp.View;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
@@ -23,7 +24,7 @@ import retrofit2.Response;
 
 public class CriaContato extends AppCompatActivity{
     private static final String TAG = CriaContato.class.getSimpleName();
-
+    Toolbar toolbar;
     private EditText edtNome;
     private EditText edtApelido;
     private EditText dtNasc;
@@ -36,6 +37,7 @@ public class CriaContato extends AppCompatActivity{
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_cadastro);
+        initToolBar();
 
         edtNome = (EditText) findViewById(R.id.edtCadNome);
         edtApelido = (EditText) findViewById(R.id.edtCadApelido);
@@ -47,6 +49,23 @@ public class CriaContato extends AppCompatActivity{
         carregarTipo();
         addListenerOnButtonSalvarPreferencias();
         addListenerOnButtonCriarContato();
+    }
+
+    private void initToolBar() {
+        toolbar = (Toolbar) findViewById(R.id.toolbarCad);
+        toolbar.setTitle(R.string.app_name);
+
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(CriaContato.this, MainActivity.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                startActivity(intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP));
+            }
+        });
     }
 
     private void addListenerOnButtonCriarContato() {
