@@ -41,7 +41,7 @@ public class MainActivity extends AppCompatActivity {
         recyclerView = (RecyclerView) findViewById(R.id.recycler);
         recyclerView.setHasFixedSize(true);
 
-        layoutManager = new LinearLayoutManager(this /*getApplicationContext()*/);
+        layoutManager = new LinearLayoutManager(MainActivity.this);
         recyclerView.setLayoutManager(layoutManager);
 
         final ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
@@ -52,8 +52,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onResponse(Call<List<Contatos>> call, Response<List<Contatos>> response) {
                 List<Contatos> contatosList = response.body();
-                    //adapter = new ContatosAdapter(getApplicationContext(), contatosList);
-                adapter = new ContatosAdapter(contatosList);
+                adapter = new ContatosAdapter(MainActivity.this, contatosList);
                 recyclerView.setAdapter(adapter);
             }
 

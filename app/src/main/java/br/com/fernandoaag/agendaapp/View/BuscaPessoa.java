@@ -46,7 +46,8 @@ public class BuscaPessoa extends AppCompatActivity {
             @Override
             public void onResponse(Call<List<Contatos>> call, Response<List<Contatos>> response) {
                 List<Contatos> contato = response.body();
-                recyclerView.setAdapter(new ContatosAdapter(contato));
+
+                recyclerView.setAdapter(new ContatosAdapter(BuscaPessoa.this, contato));
             }
 
             @Override
