@@ -2,6 +2,7 @@ package br.com.fernandoaag.agendaapp.View;
 
 import android.content.Intent;
 import android.net.Uri;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -24,9 +25,53 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements ContatosAdapter.Callback{
 
-    private static final String TAG = MainActivity.class.getSimpleName();
+    private RecyclerView recyclerView;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+
+        recyclerView = (RecyclerView) findViewById(R.id.recycler);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+
+        mostraContatos();
+        addListenerOnButtonConsultar();
+        addListenerOnButtonNovo();
+    }
+
+    private void mostraContatos() {
+        ApiClient.INSTANCE.apiInterface().listaContatos()
+                .enqueue(new Callback<List<Contatos>>() {
+                    @Override
+                    public void onResponse(Call<List<Contatos>> call, Response<List<Contatos>> response) {
+                        final ContatosAdapter adapter = new ContatosAdapter(response.body());
+                        adapter.setCallback(MainActivity.this);
+                        recyclerView.setAdapter(adapter);
+                    }
+
+                    @Override
+                    public void onFailure(Call<List<Contatos>> call, Throwable t) {
+                        AlertDialog alerta;
+                        t.printStackTrace();
+                        AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
+                        builder.setTitle("Erro");
+                        builder.setMessage(t.getMessage());
+                        builder.setPositiveButton("Ok", null);
+                        alerta = builder.create();
+                        alerta.show();
+                    }
+                });
+    }
+
+    @Override
+    public void Item(int Positon, Contatos contatos){
+        //final Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(contatos))
+    }
+
+    /*private static final String TAG = MainActivity.class.getSimpleName();
     private RecyclerView recyclerView;
     private RecyclerView.LayoutManager layoutManager;
     private ContatosAdapter adapter;
@@ -85,7 +130,7 @@ public class MainActivity extends AppCompatActivity {
         toolbar = (Toolbar) findViewById(R.id.toolbarCad);
         toolbar.setTitle(R.string.app_name);
 
-    }
+    }*/
 
     private void addListenerOnButtonConsultar() {
         ImageButton btnBuscar = (ImageButton) findViewById(R.id.imgBtnBuscar);

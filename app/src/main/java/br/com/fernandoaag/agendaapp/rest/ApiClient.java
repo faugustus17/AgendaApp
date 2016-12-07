@@ -1,9 +1,11 @@
 package br.com.fernandoaag.agendaapp.rest;
 
+import android.support.annotation.NonNull;
+
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
-public class ApiClient {
+/*public class ApiClient {
     private static final String BASE_URL = "http://10.0.2.2:8080/WebServiceAgenda/rest/service/";
     private static Retrofit retrofit = null;
 
@@ -16,5 +18,24 @@ public class ApiClient {
             }
             return retrofit;
         }
+}*/
+
+public enum ApiClient{
+    INSTANCE;
+
+    private static final String BASE_URL = "http://10.0.2.2:8080/WebServiceAgenda/rest/service/";
+    private final ApiInterface apiInterface;
+
+    ApiClient(){
+        final Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl(BASE_URL)
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
+        apiInterface = retrofit.create(ApiInterface.class);
+    }
+
+    public @NonNull ApiInterface apiInterface() {
+        return apiInterface;
+    }
 }
 

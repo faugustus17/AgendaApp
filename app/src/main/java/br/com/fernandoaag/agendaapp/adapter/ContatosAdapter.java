@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.helper.ItemTouchHelper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,8 +17,85 @@ import br.com.fernandoaag.agendaapp.R;
 import br.com.fernandoaag.agendaapp.View.AlteraContato;
 import br.com.fernandoaag.agendaapp.View.MainActivity;
 import br.com.fernandoaag.agendaapp.model.Contatos;
+import retrofit2.Callback;
 
-public class ContatosAdapter extends RecyclerView.Adapter<ContatosAdapter.ContatoViewHolder>{
+
+
+public class ContatosAdapter extends RecyclerView.Adapter<ContatosAdapter.ViewHolder>{
+
+    private final List<Contatos> contatosList;
+    private Callback callback;
+
+    public ContatosAdapter(List<Contatos> contatosList){
+        this.contatosList = contatosList;
+    }
+
+    public void update(List<Contatos> contatosList){
+        this.contatosList.clear();
+        this.contatosList.addAll(contatosList);
+        notifyDataSetChanged();
+    }
+
+    public void setCallback(Callback callback){
+        this.callback = callback;
+    }
+
+    @Override
+    public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        final View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.list_item_contato, parent, false);
+        return new ViewHolder(v, callback);
+    }
+
+    @Override
+    public void onBindViewHolder(ViewHolder holder, int position) {
+        holder.bind(contatosList.get(position));
+
+    }
+
+    @Override
+    public int getItemCount() {
+        return contatosList.size();
+    }
+
+    public interface Callback{
+        void Item(int position, Contatos contatos);
+    }
+
+    static class ViewHolder extends RecyclerView.ViewHolder{
+        LinearLayout linearLayout;
+        TextView nome;
+        TextView apelido;
+        TextView telefone;
+        TextView tipo;
+        private Contatos contatos;
+
+        public ViewHolder(View itemView, final Callback callback){
+            super(itemView);
+            linearLayout = (LinearLayout) itemView.findViewById(R.id.contatosLayout);
+            nome = (TextView) itemView.findViewById(R.id.txtNome);
+            apelido = (TextView) itemView.findViewById(R.id.txtApelido);
+            telefone = (TextView) itemView.findViewById(R.id.txtTelefone);
+            tipo = (TextView) itemView.findViewById(R.id.txtTipo);
+
+            if(callback != null){
+                if(contatos != null){
+                    callback.Item(getAdapterPosition(), contatos);
+                }
+            }
+        }
+
+        public void bind(final Contatos contatos){
+            this.contatos = contatos;
+            nome.setText(contatos.getNome());
+            apelido.setText(contatos.getApelido());
+            telefone.setText(contatos.getTelefone());
+            tipo.setText(contatos.getTipo());
+
+        }
+    }
+}
+
+/*public class ContatosAdapter extends RecyclerView.Adapter<ContatosAdapter.ContatoViewHolder>{
 
     private List<Contatos> contatosList;
     private Activity activity;
@@ -52,7 +130,7 @@ public class ContatosAdapter extends RecyclerView.Adapter<ContatosAdapter.Contat
                 callIntent.setData(Uri.parse(telefone));
                 activity.startActivity(callIntent);
             }
-        });*/
+        });
 
         holder.nome.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -100,7 +178,7 @@ public class ContatosAdapter extends RecyclerView.Adapter<ContatosAdapter.Contat
                 intent.putExtra("email", email);
                 view.getContext().startActivity(intent);
             }
-        });*/
+        });
     }
 
     @Override
@@ -125,4 +203,4 @@ public class ContatosAdapter extends RecyclerView.Adapter<ContatosAdapter.Contat
             tipo = (TextView) itemView.findViewById(R.id.txtTipo);
         }
     }
-}
+}*/
