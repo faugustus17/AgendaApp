@@ -2,10 +2,6 @@ package br.com.fernandoaag.agendaapp.model;
 
 import com.google.gson.annotations.SerializedName;
 
-/**
- * Created by Nando on 23/11/2016.
- */
-
 public class Contatos {
     @SerializedName("idContato")
     private int idContato;

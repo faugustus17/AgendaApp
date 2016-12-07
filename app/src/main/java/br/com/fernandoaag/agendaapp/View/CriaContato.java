@@ -11,7 +11,6 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Toast;
-
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
@@ -20,7 +19,6 @@ import br.com.fernandoaag.agendaapp.Utils.PrefUtil;
 import br.com.fernandoaag.agendaapp.Utils.ValidaDados;
 import br.com.fernandoaag.agendaapp.model.Contatos;
 import br.com.fernandoaag.agendaapp.rest.ApiClient;
-import br.com.fernandoaag.agendaapp.rest.ApiInterface;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;

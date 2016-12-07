@@ -10,7 +10,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.Toast;
-
 import br.com.fernandoaag.agendaapp.R;
 
 public class ItemContato extends AppCompatActivity {
@@ -43,8 +42,6 @@ public class ItemContato extends AppCompatActivity {
             }catch (android.content.ActivityNotFoundException ex){
                 Toast.makeText(getApplicationContext(), "Chamada não realizada"+ex.getMessage(), Toast.LENGTH_LONG).show();
             }
-
         }
-
     }
 }

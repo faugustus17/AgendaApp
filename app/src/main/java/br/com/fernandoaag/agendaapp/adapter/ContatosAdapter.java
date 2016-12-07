@@ -69,6 +69,7 @@ public class ContatosAdapter extends RecyclerView.Adapter<ContatosAdapter.ViewHo
             apelido = (TextView) itemView.findViewById(R.id.txtApelido);
             telefone = (TextView) itemView.findViewById(R.id.txtTelefone);
             tipo = (TextView) itemView.findViewById(R.id.txtTipo);
+            imageView = (ImageView) itemView.findViewById(R.id.ic_phone);
 
 
             nome.setOnClickListener(new View.OnClickListener() {
@@ -82,19 +83,20 @@ public class ContatosAdapter extends RecyclerView.Adapter<ContatosAdapter.ViewHo
                 }
             });
 
-            /*imageView.setOnClickListener(new View.OnClickListener() {
+            imageView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    String telefone = (contatos.getTelefone());
+                    //String telefone = (contatos.getTelefone());
                     chamada(view);
                 }
-            });*/
+            });
         }
 
         public void chamada(View view) {
             Intent intent = new Intent(Intent.ACTION_CALL);
-            String telefone = intent.getStringExtra("telefone");
-            intent.setData(Uri.parse(telefone));
+            String telefone = (contatos.getTelefone());
+            telefone = telefone.substring(5,9)+telefone.substring(10,15);
+            intent.setData(Uri.parse("tel:"+telefone));
             if (ActivityCompat.checkSelfPermission(view.getContext(), Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
                 return;
             }else {
