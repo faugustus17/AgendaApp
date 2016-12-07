@@ -6,8 +6,7 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
+import java.util.Locale;
 
 public class validaDados{
     public boolean valData(String data){
@@ -52,7 +51,7 @@ public class validaDados{
     }
 
     public boolean verificaVencimentoData(String data) throws ParseException {
-        boolean isDataValida = false;
+        boolean isDataValida;
         Calendar calendar = new GregorianCalendar();
         Date dataAtual = new Date();
         calendar.setTime(dataAtual);

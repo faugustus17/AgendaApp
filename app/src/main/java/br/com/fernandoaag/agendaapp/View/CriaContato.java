@@ -84,9 +84,7 @@ public class CriaContato extends AppCompatActivity{
                     c.setTipo(spnTipo.getSelectedItem().toString());
                     c.setEmail(email.getText().toString());
 
-                    ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
-                    Call<Contatos> call = apiService.criaContato(c);
-                    call.enqueue(new Callback<Contatos>() {
+                    ApiClient.INSTANCE.apiInterface().criaContato(c).enqueue(new Callback<Contatos>() {
                         @Override
                         public void onResponse(Call<Contatos> call, Response<Contatos> response) {
 
@@ -101,8 +99,7 @@ public class CriaContato extends AppCompatActivity{
                     intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                     startActivity(intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP));
                 }
-                  }
-
+            }
         });
     }
 

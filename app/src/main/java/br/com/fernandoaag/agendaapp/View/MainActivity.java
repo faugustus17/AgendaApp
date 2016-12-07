@@ -1,26 +1,22 @@
 package br.com.fernandoaag.agendaapp.View;
 
 import android.content.Intent;
-import android.net.Uri;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
-import android.widget.ImageView;
 import android.widget.Toast;
 import java.util.List;
 import br.com.fernandoaag.agendaapp.R;
 import br.com.fernandoaag.agendaapp.adapter.ContatosAdapter;
 import br.com.fernandoaag.agendaapp.model.Contatos;
 import br.com.fernandoaag.agendaapp.rest.ApiClient;
-import br.com.fernandoaag.agendaapp.rest.ApiInterface;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -28,11 +24,14 @@ import retrofit2.Response;
 public class MainActivity extends AppCompatActivity implements ContatosAdapter.Callback{
 
     private RecyclerView recyclerView;
+    Toolbar toolbar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        initToolBar();
 
         recyclerView = (RecyclerView) findViewById(R.id.recycler);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
@@ -58,79 +57,44 @@ public class MainActivity extends AppCompatActivity implements ContatosAdapter.C
                         t.printStackTrace();
                         AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
                         builder.setTitle("Erro");
-                        builder.setMessage(t.getMessage());
+                        builder.setMessage(t.getMessage()+"\n"+toString());
                         builder.setPositiveButton("Ok", null);
                         alerta = builder.create();
                         alerta.show();
+
                     }
-                });
+        });
+
+        //ApiClient.INSTANCE.apiInterface().listaContatos().execute();
     }
 
     @Override
     public void Item(int Positon, Contatos contatos){
-        //final Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(contatos))
-    }
+        final Intent intent = new Intent(MainActivity.this, AlteraContato.class);
+        String idContato = String.valueOf(contatos.getIdContato());
+        String nome = (contatos.getNome());
+        String apelido = (contatos.getApelido());
+        String dtNasc = (contatos.getDtNasc());
+        String telefone = (contatos.getTelefone());
+        String tipo = (contatos.getTipo());
+        String email = (contatos.getEmail());
 
-    /*private static final String TAG = MainActivity.class.getSimpleName();
-    private RecyclerView recyclerView;
-    private RecyclerView.LayoutManager layoutManager;
-    private ContatosAdapter adapter;
-    ImageView imageView;
-
-    Toolbar toolbar;
-
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
-
-        initToolBar();
-
-        recyclerView = (RecyclerView) findViewById(R.id.recycler);
-        recyclerView.setHasFixedSize(true);
-
-        layoutManager = new LinearLayoutManager(MainActivity.this);
-        recyclerView.setLayoutManager(layoutManager);
-
-        final ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
-
-        Call<List<Contatos>> call = apiService.listaContatos();
-
-        call.enqueue(new Callback<List<Contatos>>() {
-            @Override
-            public void onResponse(Call<List<Contatos>> call, Response<List<Contatos>> response) {
-                List<Contatos> contatosList = response.body();
-                adapter = new ContatosAdapter(MainActivity.this, contatosList);
-                recyclerView.setAdapter(adapter);
-            }
-
-            @Override
-            public void onFailure(Call<List<Contatos>> call, Throwable t) {
-                alert(toString());
-                final String str=t.getMessage();
-
-                alert(str);
-
-                Log.e(TAG, toString());
-            }
-        });
-
-        addListenerOnButtonConsultar();
-        addListenerOnButtonNovo();
-
-        addListenerImageView();
-
-    }
-
-    private void addListenerImageView() {
-
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        intent.putExtra("idContato", idContato);
+        intent.putExtra("nome", nome);
+        intent.putExtra("apelido", apelido);
+        intent.putExtra("dtNasc", dtNasc);
+        intent.putExtra("telefone", telefone);
+        intent.putExtra("tipo", tipo);
+        intent.putExtra("email", email);
+        startActivity(intent);
     }
 
     private void initToolBar() {
         toolbar = (Toolbar) findViewById(R.id.toolbarCad);
         toolbar.setTitle(R.string.app_name);
 
-    }*/
+    }
 
     private void addListenerOnButtonConsultar() {
         ImageButton btnBuscar = (ImageButton) findViewById(R.id.imgBtnBuscar);
