@@ -37,7 +37,7 @@ public class BuscaPessoa extends AppCompatActivity implements ContatosAdapter.Ca
         Bundle extras = getIntent().getExtras();
         String nome = extras.getString("nome");
 
-        recyclerView = (RecyclerView) findViewById(R.id.recycler);
+        recyclerView = (RecyclerView) findViewById(R.id.recyclerBusca);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
         mostraContatos(nome);

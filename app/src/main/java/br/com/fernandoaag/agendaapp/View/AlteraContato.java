@@ -103,26 +103,6 @@ public class AlteraContato extends AppCompatActivity {
                         }
                     });
 
-                    /*try {
-                        ApiClient.INSTANCE.apiInterface().alteraContato(c).execute();
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                        alert(e.getMessage());
-                    }*/
-
-                    /*ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
-                    Call<Contatos> call = apiService.alteraContato(c);
-                    call.enqueue(new Callback<Contatos>() {
-                        @Override
-                        public void onResponse(Call<Contatos> call, Response<Contatos> response) {
-
-                        }
-
-                        @Override
-                        public void onFailure(Call<Contatos> call, Throwable t) {
-
-                        }
-                    });*/
                     Intent intent = new Intent(AlteraContato.this, MainActivity.class);
                     intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                     startActivity(intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP));
@@ -153,12 +133,6 @@ public class AlteraContato extends AppCompatActivity {
         btnExcluir.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                /*try {
-                    ApiClient.INSTANCE.apiInterface().delContato(Integer.parseInt(idContato)).execute();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                    alert(e.getMessage());
-                }*/
 
                 ApiClient.INSTANCE.apiInterface().delContato(Integer.parseInt(idContato)).enqueue(new Callback<Contatos>() {
                     @Override
@@ -171,19 +145,6 @@ public class AlteraContato extends AppCompatActivity {
 
                     }
                 });
-                /*ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
-                Call<Contatos> call = apiService.delContato(Integer.valueOf(idContato));
-                call.enqueue(new Callback<Contatos>() {
-                    @Override
-                    public void onResponse(Call<Contatos> call, Response<Contatos> response) {
-
-                    }
-
-                    @Override
-                    public void onFailure(Call<Contatos> call, Throwable t) {
-
-                    }
-                });*/
                 Intent intent = new Intent(AlteraContato.this, MainActivity.class);
                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 startActivity(intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP));

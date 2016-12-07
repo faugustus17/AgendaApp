@@ -1,11 +1,19 @@
 package br.com.fernandoaag.agendaapp.adapter;
 
+import android.Manifest;
+import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.net.Uri;
+import android.support.v4.app.ActivityCompat;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
+
 import java.util.List;
 import br.com.fernandoaag.agendaapp.R;
 import br.com.fernandoaag.agendaapp.model.Contatos;
@@ -51,6 +59,7 @@ public class ContatosAdapter extends RecyclerView.Adapter<ContatosAdapter.ViewHo
         TextView apelido;
         TextView telefone;
         TextView tipo;
+        ImageView imageView;
         private Contatos contatos;
 
         ViewHolder(View itemView, final Callback callback){
@@ -60,6 +69,7 @@ public class ContatosAdapter extends RecyclerView.Adapter<ContatosAdapter.ViewHo
             apelido = (TextView) itemView.findViewById(R.id.txtApelido);
             telefone = (TextView) itemView.findViewById(R.id.txtTelefone);
             tipo = (TextView) itemView.findViewById(R.id.txtTipo);
+
 
             nome.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -71,6 +81,30 @@ public class ContatosAdapter extends RecyclerView.Adapter<ContatosAdapter.ViewHo
                     }
                 }
             });
+
+            /*imageView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    String telefone = (contatos.getTelefone());
+                    chamada(view);
+                }
+            });*/
+        }
+
+        public void chamada(View view) {
+            Intent intent = new Intent(Intent.ACTION_CALL);
+            String telefone = intent.getStringExtra("telefone");
+            intent.setData(Uri.parse(telefone));
+            if (ActivityCompat.checkSelfPermission(view.getContext(), Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
+                return;
+            }else {
+                try {
+                    view.getContext().startActivity(intent);
+                } catch (android.content.ActivityNotFoundException ex) {
+                    Toast.makeText(view.getContext().getApplicationContext(), "Chamada não realizada" + ex.getMessage(), Toast.LENGTH_LONG).show();
+                }
+            }
+
         }
 
         void bind(final Contatos contatos){
