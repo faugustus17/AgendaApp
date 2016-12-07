@@ -3,6 +3,9 @@ package br.com.fernandoaag.agendaapp.Utils;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -47,4 +50,26 @@ public class validaDados{
         }
         return isEmailIdValid;
     }
+
+    public boolean verificaVencimentoData(String data) throws ParseException {
+        boolean isDataValida = false;
+        Calendar calendar = new GregorianCalendar();
+        Date dataAtual = new Date();
+        calendar.setTime(dataAtual);
+
+        SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+        Date dtAtual = calendar.getTime();
+        Date dtInfo = new Date(dateFormat.parse(data).getTime());
+
+        if(dtInfo.before(dtAtual)){
+            isDataValida = true;
+        }else if (dtInfo.after(dtAtual)){
+            isDataValida =false;
+        }else {
+            isDataValida = true;
+        }
+        return isDataValida;
+    }
+
+
 }
