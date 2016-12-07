@@ -91,7 +91,7 @@ public class AlteraContato extends AppCompatActivity {
                     c.setTipo(spnTipo.getSelectedItem().toString());
                     c.setEmail(edtEmail.getText().toString());
 
-                    /*ApiClient.INSTANCE.apiInterface().alteraContato(c).enqueue(new Callback<Contatos>() {
+                    ApiClient.INSTANCE.apiInterface().alteraContato(c).enqueue(new Callback<Contatos>() {
                         @Override
                         public void onResponse(Call<Contatos> call, Response<Contatos> response) {
 
@@ -101,14 +101,14 @@ public class AlteraContato extends AppCompatActivity {
                         public void onFailure(Call<Contatos> call, Throwable t) {
 
                         }
-                    });*/
+                    });
 
-                    try {
+                    /*try {
                         ApiClient.INSTANCE.apiInterface().alteraContato(c).execute();
                     } catch (IOException e) {
                         e.printStackTrace();
                         alert(e.getMessage());
-                    }
+                    }*/
 
                     /*ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
                     Call<Contatos> call = apiService.alteraContato(c);
@@ -153,14 +153,14 @@ public class AlteraContato extends AppCompatActivity {
         btnExcluir.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                try {
+                /*try {
                     ApiClient.INSTANCE.apiInterface().delContato(Integer.parseInt(idContato)).execute();
                 } catch (IOException e) {
                     e.printStackTrace();
                     alert(e.getMessage());
-                }
+                }*/
 
-                /*ApiClient.INSTANCE.apiInterface().delContato(Integer.parseInt(idContato)).enqueue(new Callback<Contatos>() {
+                ApiClient.INSTANCE.apiInterface().delContato(Integer.parseInt(idContato)).enqueue(new Callback<Contatos>() {
                     @Override
                     public void onResponse(Call<Contatos> call, Response<Contatos> response) {
 
@@ -170,7 +170,7 @@ public class AlteraContato extends AppCompatActivity {
                     public void onFailure(Call<Contatos> call, Throwable t) {
 
                     }
-                });*/
+                });
                 /*ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
                 Call<Contatos> call = apiService.delContato(Integer.valueOf(idContato));
                 call.enqueue(new Callback<Contatos>() {
