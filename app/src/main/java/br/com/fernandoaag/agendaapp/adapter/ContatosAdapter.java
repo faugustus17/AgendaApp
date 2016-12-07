@@ -3,10 +3,12 @@ package br.com.fernandoaag.agendaapp.adapter;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import java.util.List;
@@ -19,6 +21,8 @@ public class ContatosAdapter extends RecyclerView.Adapter<ContatosAdapter.Contat
 
     private List<Contatos> contatosList;
     private Activity activity;
+
+    ImageView imageView;
 
     public ContatosAdapter(Activity activity, List<Contatos> contatosList ) {
         this.contatosList = contatosList;
@@ -39,7 +43,18 @@ public class ContatosAdapter extends RecyclerView.Adapter<ContatosAdapter.Contat
         holder.telefone.setText(contatos.getTelefone());
         holder.tipo.setText(contatos.getTipo());
 
-        holder.itemView.setOnClickListener(new View.OnClickListener() {
+        /*imageView = (ImageView) activity.findViewById(R.id.ic_phone);
+        imageView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                String telefone = (contatosList.get(position).getTelefone());
+                Intent callIntent = new Intent(Intent.ACTION_DIAL);
+                callIntent.setData(Uri.parse(telefone));
+                activity.startActivity(callIntent);
+            }
+        });*/
+
+        holder.nome.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 String idContato = String.valueOf(contatosList.get(position).getIdContato());
@@ -62,6 +77,30 @@ public class ContatosAdapter extends RecyclerView.Adapter<ContatosAdapter.Contat
                 view.getContext().startActivity(intent);
             }
         });
+
+        /*holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                String idContato = String.valueOf(contatosList.get(position).getIdContato());
+                String nome = (contatosList.get(position).getNome());
+                String apelido = (contatosList.get(position).getApelido());
+                String dtNasc = (contatosList.get(position).getDtNasc());
+                String telefone = (contatosList.get(position).getTelefone());
+                String tipo = (contatosList.get(position).getTipo());
+                String email = (contatosList.get(position).getEmail());
+
+                Intent intent = new Intent(view.getContext(), AlteraContato.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                intent.putExtra("idContato", idContato);
+                intent.putExtra("nome", nome);
+                intent.putExtra("apelido", apelido);
+                intent.putExtra("dtNasc", dtNasc);
+                intent.putExtra("telefone", telefone);
+                intent.putExtra("tipo", tipo);
+                intent.putExtra("email", email);
+                view.getContext().startActivity(intent);
+            }
+        });*/
     }
 
     @Override

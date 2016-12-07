@@ -1,6 +1,7 @@
 package br.com.fernandoaag.agendaapp.View;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -11,6 +12,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.Toast;
 import java.util.List;
 import br.com.fernandoaag.agendaapp.R;
@@ -28,6 +30,7 @@ public class MainActivity extends AppCompatActivity {
     private RecyclerView recyclerView;
     private RecyclerView.LayoutManager layoutManager;
     private ContatosAdapter adapter;
+    ImageView imageView;
 
     Toolbar toolbar;
 
@@ -69,6 +72,12 @@ public class MainActivity extends AppCompatActivity {
 
         addListenerOnButtonConsultar();
         addListenerOnButtonNovo();
+
+        addListenerImageView();
+
+    }
+
+    private void addListenerImageView() {
 
     }
 
