@@ -11,10 +11,13 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Toast;
+
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
 import br.com.fernandoaag.agendaapp.R;
 import br.com.fernandoaag.agendaapp.Utils.PrefUtil;
+import br.com.fernandoaag.agendaapp.Utils.ValidaDados;
 import br.com.fernandoaag.agendaapp.model.Contatos;
 import br.com.fernandoaag.agendaapp.rest.ApiClient;
 import br.com.fernandoaag.agendaapp.rest.ApiInterface;
@@ -31,7 +34,7 @@ public class CriaContato extends AppCompatActivity{
     private EditText telefone;
     private Spinner spnTipo;
     private EditText email;
-
+    ValidaDados vD = new ValidaDados();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -79,25 +82,38 @@ public class CriaContato extends AppCompatActivity{
                     Contatos c = new Contatos();
                     c.setNome(edtNome.getText().toString());
                     c.setApelido(edtApelido.getText().toString());
-                    c.setDtNasc(data(dtNasc.getText().toString()));
-                    c.setTelefone(telefone.getText().toString());
-                    c.setTipo(spnTipo.getSelectedItem().toString());
-                    c.setEmail(email.getText().toString());
-
-                    ApiClient.INSTANCE.apiInterface().criaContato(c).enqueue(new Callback<Contatos>() {
-                        @Override
-                        public void onResponse(Call<Contatos> call, Response<Contatos> response) {
-
+                    if (!vD.valData(dtNasc.getText().toString())) {
+                        dtNasc.setError("Informe uma data válida!");
+                    }
+                    try {
+                        if (!vD.verificaVencimentoData(dtNasc.getText().toString())) {
+                            dtNasc.setError("Data deve ser anterior ou igual a data atual!");
                         }
+                        c.setDtNasc(data(dtNasc.getText().toString()));
+                        c.setTelefone(telefone.getText().toString());
+                        c.setTipo(spnTipo.getSelectedItem().toString());
+                        if (email.getText().toString().length() != 0 && !vD.validaEmail(email.getText().toString())) {
+                            email.setError("Informe um email válido!");
+                        } else {
+                            c.setEmail(email.getText().toString());
+                            ApiClient.INSTANCE.apiInterface().criaContato(c).enqueue(new Callback<Contatos>() {
+                                @Override
+                                public void onResponse(Call<Contatos> call, Response<Contatos> response) {
 
-                        @Override
-                        public void onFailure(Call<Contatos> call, Throwable t) {
+                                }
 
+                                @Override
+                                public void onFailure(Call<Contatos> call, Throwable t) {
+
+                                }
+                            });
+                            Intent intent = new Intent(CriaContato.this, MainActivity.class);
+                            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                            startActivity(intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP));
                         }
-                    });
-                    Intent intent = new Intent(CriaContato.this, MainActivity.class);
-                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                    startActivity(intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP));
+                    } catch (ParseException e) {
+                        e.printStackTrace();
+                    }
                 }
             }
         });
