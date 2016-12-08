@@ -47,10 +47,11 @@ public class MainActivity extends AppCompatActivity implements ContatosAdapter.C
                 .enqueue(new Callback<List<Contatos>>() {
                     @Override
                     public void onResponse(Call<List<Contatos>> call, Response<List<Contatos>> response) {
+                        erro =+ response.code()+"\n"+response.raw()+"\n"+response.errorBody()+"\n"+response.errorBody();
                         final ContatosAdapter adapter = new ContatosAdapter(response.body());
                         adapter.setCallback(MainActivity.this);
                         recyclerView.setAdapter(adapter);
-                        erro = response.code()+"\n"+response.raw()+"\n"+response.errorBody()+"\n"+response.errorBody();
+                        erro =+ response.code()+"\n"+response.raw()+"\n"+response.errorBody()+"\n"+response.errorBody();
                     }
 
                     @Override

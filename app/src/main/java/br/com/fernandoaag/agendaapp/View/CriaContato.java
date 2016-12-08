@@ -2,6 +2,7 @@ package br.com.fernandoaag.agendaapp.View;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -26,6 +27,7 @@ import retrofit2.Response;
 public class CriaContato extends AppCompatActivity{
     private static final String TAG = CriaContato.class.getSimpleName();
     Toolbar toolbar;
+    String erro ="";
     private EditText edtNome;
     private EditText edtApelido;
     private EditText dtNasc;
@@ -77,32 +79,42 @@ public class CriaContato extends AppCompatActivity{
                 if (edtNome.length() == 0 || telefone.length() == 0 || spnTipo.getSelectedItem() == "SELECIONE") {
                     alert("Campos NOME, TELEFONE E TIPO não podem ser vazios");
                 } else {
-                    Contatos c = new Contatos();
-                    c.setNome(edtNome.getText().toString());
-                    c.setApelido(edtApelido.getText().toString());
-                    if (!vD.valData(dtNasc.getText().toString())) {
-                        dtNasc.setError("Informe uma data válida!");
-                    }
                     try {
-                        if (!vD.verificaVencimentoData(dtNasc.getText().toString())) {
+                        if (!vD.valData(dtNasc.getText().toString())) {
+                            dtNasc.setError("Informe uma data válida!");
+                        }else if (!vD.verificaVencimentoData(dtNasc.getText().toString())) {
                             dtNasc.setError("Data deve ser anterior ou igual a data atual!");
-                        }
-                        c.setDtNasc(data(dtNasc.getText().toString()));
-                        c.setTelefone(telefone.getText().toString());
-                        c.setTipo(spnTipo.getSelectedItem().toString());
-                        if (email.getText().toString().length() != 0 && !vD.validaEmail(email.getText().toString())) {
+                        }else if (email.getText().toString().length() != 0 && !vD.validaEmail(email.getText().toString())) {
                             email.setError("Informe um email válido!");
-                        } else {
+                        } else if ((vD.valData(dtNasc.getText().toString()))
+                                && (vD.verificaVencimentoData(dtNasc.getText().toString()))
+                                && (vD.validaEmail(email.getText().toString()))){
+                            Contatos c = new Contatos();
+                            c.setNome(edtNome.getText().toString());
+                            c.setApelido(edtApelido.getText().toString());
+                            c.setDtNasc(data(dtNasc.getText().toString()));
+                            c.setTelefone(telefone.getText().toString());
+                            c.setTipo(spnTipo.getSelectedItem().toString());
                             c.setEmail(email.getText().toString());
                             ApiClient.INSTANCE.apiInterface().criaContato(c).enqueue(new Callback<Contatos>() {
                                 @Override
                                 public void onResponse(Call<Contatos> call, Response<Contatos> response) {
-
+                                    if(response.isSuccessful()){
+                                        alert(response.toString());
+                                    }
+                                    erro =+ response.code()+"\n"+response.raw()+"\n"+response.errorBody()+"\n"+response.errorBody();
                                 }
 
                                 @Override
                                 public void onFailure(Call<Contatos> call, Throwable t) {
-
+                                    AlertDialog alerta;
+                                    t.printStackTrace();
+                                    AlertDialog.Builder builder = new AlertDialog.Builder(CriaContato.this);
+                                    builder.setTitle("Erro");
+                                    builder.setMessage(t.getMessage()+"\n"+erro);
+                                    builder.setPositiveButton("Ok", null);
+                                    alerta = builder.create();
+                                    alerta.show();
                                 }
                             });
                             Intent intent = new Intent(CriaContato.this, MainActivity.class);

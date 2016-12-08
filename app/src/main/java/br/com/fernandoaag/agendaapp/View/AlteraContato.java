@@ -37,6 +37,7 @@ public class AlteraContato extends AppCompatActivity {
     private String tipo;
     ValidaDados vD = new ValidaDados();
     Toolbar toolbar;
+    String erro="";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -81,35 +82,45 @@ public class AlteraContato extends AppCompatActivity {
             public void onClick(View view) {
                 if (edtNome.length() == 0 || edtTelefone.length() == 0 || spnTipo.getSelectedItem() == "SELECIONE") {
                     alert("Campos NOME, TELEFONE E TIPO não podem ser vazios");
-                } else {
-                    Contatos c = new Contatos();
-                    c.setIdContato(Integer.parseInt(idContato));
-                    c.setNome(edtNome.getText().toString());
-                    c.setApelido(edtApelido.getText().toString());
-                    if (!vD.valData(edtDtNasc.getText().toString())) {
-                        edtDtNasc.setError("Informe uma data válida!");
-                    }
+                } else
                     try {
-                        if (!vD.verificaVencimentoData(edtDtNasc.getText().toString())) {
+                        if (!vD.valData(edtDtNasc.getText().toString())) {
+                            edtDtNasc.setError("Informe uma data válida!");
+                        } else if (!vD.verificaVencimentoData(edtDtNasc.getText().toString())) {
                             edtDtNasc.setError("Data deve ser anterior ou igual a data atual!");
-                        }
-                        c.setDtNasc(data(edtDtNasc.getText().toString()));
-                        c.setTelefone(edtTelefone.getText().toString());
-                        c.setTipo(spnTipo.getSelectedItem().toString());
-                        if (edtEmail.getText().toString().length() != 0 && !vD.validaEmail(edtEmail.getText().toString())) {
+                        } else if (edtEmail.getText().toString().length() != 0 && !vD.validaEmail(edtEmail.getText().toString())) {
                             edtEmail.setError("Informe um email válido!");
-                        } else {
+                        } else if((vD.valData(edtDtNasc.getText().toString()))
+                                && (vD.verificaVencimentoData(edtDtNasc.getText().toString()))
+                                && (vD.validaEmail(edtEmail.getText().toString()))){
+                            Contatos c = new Contatos();
+                            c.setIdContato(Integer.parseInt(idContato));
+                            c.setNome(edtNome.getText().toString());
+                            c.setApelido(edtApelido.getText().toString());
+                            c.setDtNasc(data(edtDtNasc.getText().toString()));
+                            c.setTelefone(edtTelefone.getText().toString());
+                            c.setTipo(spnTipo.getSelectedItem().toString());
                             c.setEmail(edtEmail.getText().toString());
 
                             ApiClient.INSTANCE.apiInterface().alteraContato(c).enqueue(new Callback<Contatos>() {
                                 @Override
                                 public void onResponse(Call<Contatos> call, Response<Contatos> response) {
-
+                                    if (response.isSuccessful()) {
+                                        alert(response.toString());
+                                    }
+                                    erro = +response.code() + "\n" + response.raw() + "\n" + response.errorBody() + "\n" + response.errorBody();
                                 }
 
                                 @Override
                                 public void onFailure(Call<Contatos> call, Throwable t) {
-
+                                    AlertDialog alerta;
+                                    t.printStackTrace();
+                                    AlertDialog.Builder builder = new AlertDialog.Builder(AlteraContato.this);
+                                    builder.setTitle("Erro");
+                                    builder.setMessage(t.getMessage() + "\n" + erro);
+                                    builder.setPositiveButton("Ok", null);
+                                    alerta = builder.create();
+                                    alerta.show();
                                 }
                             });
 
@@ -118,10 +129,11 @@ public class AlteraContato extends AppCompatActivity {
                             startActivity(intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP));
                         }
                     } catch (ParseException e) {
-                        e.printStackTrace();
+                        alert(e.getMessage());
                     }
-                }
+
             }
+
         });
     }
 
@@ -156,12 +168,22 @@ public class AlteraContato extends AppCompatActivity {
                                 ApiClient.INSTANCE.apiInterface().delContato(Integer.parseInt(idContato)).enqueue(new Callback<Contatos>() {
                                     @Override
                                     public void onResponse(Call<Contatos> call, Response<Contatos> response) {
-
+                                        if(response.isSuccessful()){
+                                            alert(response.toString());
+                                        }
+                                        erro =+ response.code()+"\n"+response.raw()+"\n"+response.errorBody()+"\n"+response.errorBody();
                                     }
 
                                     @Override
                                     public void onFailure(Call<Contatos> call, Throwable t) {
-
+                                        AlertDialog alerta;
+                                        t.printStackTrace();
+                                        AlertDialog.Builder builder = new AlertDialog.Builder(AlteraContato.this);
+                                        builder.setTitle("Erro");
+                                        builder.setMessage(t.getMessage()+"\n"+erro);
+                                        builder.setPositiveButton("Ok", null);
+                                        alerta = builder.create();
+                                        alerta.show();
                                     }
                                 });
                                 Intent intent = new Intent(AlteraContato.this, MainActivity.class);
