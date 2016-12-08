@@ -22,8 +22,6 @@ public interface ApiInterface {
     @POST("cadastrar")
     Call<Contatos> criaContato(@Body Contatos contatos);
 
-
-
     @PUT("alterar")
     Call<Contatos> alteraContato(@Body Contatos contatos);
 

@@ -1,7 +1,9 @@
 package br.com.fernandoaag.agendaapp.View;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -145,22 +147,36 @@ public class AlteraContato extends AppCompatActivity {
         btnExcluir.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                AlertDialog alerta;
+                AlertDialog.Builder builder = new AlertDialog.Builder(AlteraContato.this);
+                builder.setTitle("Aviso");
+                builder.setMessage("Realmente deseja excluir o contato?");
+                builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
+                                ApiClient.INSTANCE.apiInterface().delContato(Integer.parseInt(idContato)).enqueue(new Callback<Contatos>() {
+                                    @Override
+                                    public void onResponse(Call<Contatos> call, Response<Contatos> response) {
 
-                ApiClient.INSTANCE.apiInterface().delContato(Integer.parseInt(idContato)).enqueue(new Callback<Contatos>() {
-                    @Override
-                    public void onResponse(Call<Contatos> call, Response<Contatos> response) {
+                                    }
 
-                    }
+                                    @Override
+                                    public void onFailure(Call<Contatos> call, Throwable t) {
 
-                    @Override
-                    public void onFailure(Call<Contatos> call, Throwable t) {
+                                    }
+                                });
+                                Intent intent = new Intent(AlteraContato.this, MainActivity.class);
+                                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                                startActivity(intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP));
+                            }
+                        })
+                        .setNegativeButton("Cancelar", new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
 
-                    }
-                });
-                Intent intent = new Intent(AlteraContato.this, MainActivity.class);
-                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                startActivity(intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP));
-            }
+                            }
+                        });
+                alerta = builder.create();
+                alerta.show();
+           }
         });
     }
 

@@ -83,16 +83,16 @@ public class ContatosAdapter extends RecyclerView.Adapter<ContatosAdapter.ViewHo
                 }
             });
 
-            imageView.setOnClickListener(new View.OnClickListener() {
+            /*imageView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     //String telefone = (contatos.getTelefone());
                     chamada(view);
                 }
-            });
+            });*/
         }
 
-        public void chamada(View view) {
+        /*public void chamada(View view) {
             Intent intent = new Intent(Intent.ACTION_CALL);
             String telefone = (contatos.getTelefone());
             telefone = telefone.substring(5,9)+telefone.substring(10,15);
@@ -107,7 +107,7 @@ public class ContatosAdapter extends RecyclerView.Adapter<ContatosAdapter.ViewHo
                 }
             }
 
-        }
+        }*/
 
         void bind(final Contatos contatos){
             this.contatos = contatos;
