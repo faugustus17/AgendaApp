@@ -37,35 +37,30 @@ public class MainActivity extends AppCompatActivity implements ContatosAdapter.C
         recyclerView = (RecyclerView) findViewById(R.id.recycler);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
-        mostraContatos();
         addListenerOnButtonConsultar();
         addListenerOnButtonNovo();
-    }
 
-    private void mostraContatos() {
-        ApiClient.INSTANCE.apiInterface().listaContatos()
-                .enqueue(new Callback<List<Contatos>>() {
-                    @Override
-                    public void onResponse(Call<List<Contatos>> call, Response<List<Contatos>> response) {
-                        erro =+ response.code()+"\n"+response.raw()+"\n"+response.errorBody()+"\n"+response.errorBody();
-                        final ContatosAdapter adapter = new ContatosAdapter(response.body());
-                        adapter.setCallback(MainActivity.this);
-                        recyclerView.setAdapter(adapter);
-                        erro =+ response.code()+"\n"+response.raw()+"\n"+response.errorBody()+"\n"+response.errorBody();
-                    }
+        final Call<List<Contatos>> request = ApiClient.INSTANCE.apiInterface().listaContatos();
+        request.enqueue(new Callback<List<Contatos>>() {
+            @Override
+            public void onResponse(Call<List<Contatos>> call, Response<List<Contatos>> response) {
+                final ContatosAdapter adapter = new ContatosAdapter(response.body());
+                adapter.setCallback(MainActivity.this);
+                recyclerView.setAdapter(adapter);
+                erro = String.valueOf(response.code());
+            }
 
-                    @Override
-                    public void onFailure(Call<List<Contatos>> call, Throwable t) {
-                        AlertDialog alerta;
-                        t.printStackTrace();
-                        AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
-                        builder.setTitle("Erro");
-                        builder.setMessage(t.getMessage()+"\n"+erro);
-                        builder.setPositiveButton("Ok", null);
-                        alerta = builder.create();
-                        alerta.show();
-
-                    }
+            @Override
+            public void onFailure(Call<List<Contatos>> call, Throwable t) {
+                AlertDialog alerta;
+                t.printStackTrace();
+                AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
+                builder.setTitle("Erro");
+                builder.setMessage(t.getMessage()+"\n"+erro+"\n"+t.toString());
+                builder.setPositiveButton("Ok", null);
+                alerta = builder.create();
+                alerta.show();
+            }
         });
     }
 

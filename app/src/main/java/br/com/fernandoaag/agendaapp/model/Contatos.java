@@ -18,6 +18,11 @@ public class Contatos {
     @SerializedName("email")
     private String email;
 
+    @Override
+    public String toString() {
+        return super.toString();
+    }
+
     public Contatos() {
     }
 

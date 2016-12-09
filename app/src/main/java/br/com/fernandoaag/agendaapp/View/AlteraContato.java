@@ -105,28 +105,27 @@ public class AlteraContato extends AppCompatActivity {
                             ApiClient.INSTANCE.apiInterface().alteraContato(c).enqueue(new Callback<Contatos>() {
                                 @Override
                                 public void onResponse(Call<Contatos> call, Response<Contatos> response) {
-                                    if (response.isSuccessful()) {
-                                        alert(response.toString());
+                                    if (response.code() == 200){
+                                        erro = "Ok";
                                     }
-                                    erro = +response.code() + "\n" + response.raw() + "\n" + response.errorBody() + "\n" + response.errorBody();
                                 }
 
                                 @Override
                                 public void onFailure(Call<Contatos> call, Throwable t) {
                                     AlertDialog alerta;
-                                    t.printStackTrace();
                                     AlertDialog.Builder builder = new AlertDialog.Builder(AlteraContato.this);
                                     builder.setTitle("Erro");
-                                    builder.setMessage(t.getMessage() + "\n" + erro);
+                                    builder.setMessage(t.getMessage());
                                     builder.setPositiveButton("Ok", null);
                                     alerta = builder.create();
                                     alerta.show();
+                                    alerta.dismiss();
                                 }
                             });
-
-                            Intent intent = new Intent(AlteraContato.this, MainActivity.class);
+                            alert(erro);
+                            /*Intent intent = new Intent(AlteraContato.this, MainActivity.class);
                             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                            startActivity(intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP));
+                            startActivity(intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP));*/
                         }
                     } catch (ParseException e) {
                         alert(e.getMessage());

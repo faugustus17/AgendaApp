@@ -115,6 +115,7 @@ public class CriaContato extends AppCompatActivity{
                                     builder.setPositiveButton("Ok", null);
                                     alerta = builder.create();
                                     alerta.show();
+                                    alerta.dismiss();
                                 }
                             });
                             Intent intent = new Intent(CriaContato.this, MainActivity.class);

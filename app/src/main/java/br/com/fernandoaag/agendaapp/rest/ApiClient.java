@@ -1,24 +1,10 @@
 package br.com.fernandoaag.agendaapp.rest;
 
 import android.support.annotation.NonNull;
-
+import okhttp3.OkHttpClient;
+import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
-
-/*public class ApiClient {
-    private static final String BASE_URL = "http://10.0.2.2:8080/WebServiceAgenda/rest/service/";
-    private static Retrofit retrofit = null;
-
-    public static Retrofit getClient(){
-        if (retrofit==null){
-            retrofit = new Retrofit.Builder()
-                    .baseUrl(BASE_URL)
-                    .addConverterFactory(GsonConverterFactory.create())
-                    .build();
-            }
-            return retrofit;
-        }
-}*/
 
 public enum ApiClient{
     INSTANCE;
@@ -27,9 +13,14 @@ public enum ApiClient{
     private final ApiInterface apiInterface;
 
     ApiClient(){
+        HttpLoggingInterceptor interceptor = new HttpLoggingInterceptor();
+        interceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
+        OkHttpClient client =  new OkHttpClient.Builder().addInterceptor(interceptor).build();
+
         final Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl(BASE_URL)
                 .addConverterFactory(GsonConverterFactory.create())
+                .client(client)
+                .baseUrl(BASE_URL)
                 .build();
         apiInterface = retrofit.create(ApiInterface.class);
     }
