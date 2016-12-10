@@ -20,17 +20,15 @@ public class ItemContato extends AppCompatActivity {
 
         ImageView imageView = (ImageView) findViewById(R.id.ic_phone);
 
-        imageView.setOnClickListener(new View.OnClickListener() {
+        /*imageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                /*Intent i = getIntent();
-                String telefone = i.getStringExtra("telefone");*/
-                //chamada(view);
+                chamada(view);
             }
-        });
+        });*/
     }
 
-    public void chamada(View view) {
+    /*public void chamada(View view) {
         Intent intent = new Intent(Intent.ACTION_CALL);
         String telefone = intent.getStringExtra("telefone");
         intent.setData(Uri.parse(telefone));
@@ -43,5 +41,5 @@ public class ItemContato extends AppCompatActivity {
                 Toast.makeText(getApplicationContext(), "Chamada não realizada"+ex.getMessage(), Toast.LENGTH_LONG).show();
             }
         }
-    }
+    }*/
 }

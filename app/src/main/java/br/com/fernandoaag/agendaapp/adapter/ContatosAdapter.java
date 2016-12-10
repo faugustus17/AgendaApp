@@ -1,10 +1,12 @@
 package br.com.fernandoaag.agendaapp.adapter;
 
 import android.Manifest;
+import android.app.Activity;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,8 +14,6 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
-
 import java.util.List;
 import br.com.fernandoaag.agendaapp.R;
 import br.com.fernandoaag.agendaapp.model.Contatos;
@@ -83,31 +83,22 @@ public class ContatosAdapter extends RecyclerView.Adapter<ContatosAdapter.ViewHo
                 }
             });
 
-            /*imageView.setOnClickListener(new View.OnClickListener() {
+            imageView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    //String telefone = (contatos.getTelefone());
-                    chamada(view);
+                    int permissionCheck = ContextCompat.checkSelfPermission(view.getContext(), Manifest.permission.CALL_PHONE);
+                    if (permissionCheck != PackageManager.PERMISSION_GRANTED) {
+                        ActivityCompat.requestPermissions((Activity) view.getContext(), new String[]{Manifest.permission.CALL_PHONE}, 100);
+                    }else {
+                        Intent intent = new Intent(Intent.ACTION_CALL);
+                        String telefone = (contatos.getTelefone());
+                        telefone = telefone.substring(5,9)+telefone.substring(10,15);
+                        intent.setData(Uri.parse("tel:"+telefone));
+                        view.getContext().startActivity(intent);
+                    }
                 }
-            });*/
+            });
         }
-
-        /*public void chamada(View view) {
-            Intent intent = new Intent(Intent.ACTION_CALL);
-            String telefone = (contatos.getTelefone());
-            telefone = telefone.substring(5,9)+telefone.substring(10,15);
-            intent.setData(Uri.parse("tel:"+telefone));
-            if (ActivityCompat.checkSelfPermission(view.getContext(), Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
-                return;
-            }else {
-                try {
-                    view.getContext().startActivity(intent);
-                } catch (android.content.ActivityNotFoundException ex) {
-                    Toast.makeText(view.getContext().getApplicationContext(), "Chamada não realizada" + ex.getMessage(), Toast.LENGTH_LONG).show();
-                }
-            }
-
-        }*/
 
         void bind(final Contatos contatos){
             this.contatos = contatos;

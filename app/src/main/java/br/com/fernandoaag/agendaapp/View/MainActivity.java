@@ -47,19 +47,30 @@ public class MainActivity extends AppCompatActivity implements ContatosAdapter.C
                 final ContatosAdapter adapter = new ContatosAdapter(response.body());
                 adapter.setCallback(MainActivity.this);
                 recyclerView.setAdapter(adapter);
-                erro = String.valueOf(response.code());
             }
 
             @Override
             public void onFailure(Call<List<Contatos>> call, Throwable t) {
-                AlertDialog alerta;
-                t.printStackTrace();
-                AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
-                builder.setTitle("Erro");
-                builder.setMessage(t.getMessage()+"\n"+erro+"\n"+t.toString());
-                builder.setPositiveButton("Ok", null);
-                alerta = builder.create();
-                alerta.show();
+                String erroTM = t.getMessage();
+                CharSequence csT = "null";
+                if(erroTM.contains(csT)){
+                    Intent intent = new Intent(MainActivity.this, MainActivity.class);
+                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    startActivity(intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP));
+                }else {
+                    AlertDialog alerta;
+                    AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
+                    builder.setTitle("Erro");
+                    String erroT = t.toString();
+                    CharSequence cs1 = "failed to connect";
+                    if (erroT.contains(cs1)) {
+                        erro = "\n\nErro\nHttp: 404\nServidor Desconectado!";
+                    }
+                    builder.setMessage(t.getMessage() + "\n" + erro);
+                    builder.setPositiveButton("Ok", null);
+                    alerta = builder.create();
+                    alerta.show();
+                }
             }
         });
     }

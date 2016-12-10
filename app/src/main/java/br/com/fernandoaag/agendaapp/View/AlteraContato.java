@@ -37,7 +37,6 @@ public class AlteraContato extends AppCompatActivity {
     private String tipo;
     ValidaDados vD = new ValidaDados();
     Toolbar toolbar;
-    String erro="";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -75,67 +74,6 @@ public class AlteraContato extends AppCompatActivity {
         addListenerOnButtonExcluir();
     }
 
-    private void addListenerOnButtonAlterar() {
-        Button btnAlterar = (Button) findViewById(R.id.btnAlterar);
-        btnAlterar.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (edtNome.length() == 0 || edtTelefone.length() == 0 || spnTipo.getSelectedItem() == "SELECIONE") {
-                    alert("Campos NOME, TELEFONE E TIPO não podem ser vazios");
-                } else
-                    try {
-                        if (!vD.valData(edtDtNasc.getText().toString())) {
-                            edtDtNasc.setError("Informe uma data válida!");
-                        } else if (!vD.verificaVencimentoData(edtDtNasc.getText().toString())) {
-                            edtDtNasc.setError("Data deve ser anterior ou igual a data atual!");
-                        } else if (edtEmail.getText().toString().length() != 0 && !vD.validaEmail(edtEmail.getText().toString())) {
-                            edtEmail.setError("Informe um email válido!");
-                        } else if((vD.valData(edtDtNasc.getText().toString()))
-                                && (vD.verificaVencimentoData(edtDtNasc.getText().toString()))
-                                && (vD.validaEmail(edtEmail.getText().toString()))){
-                            Contatos c = new Contatos();
-                            c.setIdContato(Integer.parseInt(idContato));
-                            c.setNome(edtNome.getText().toString());
-                            c.setApelido(edtApelido.getText().toString());
-                            c.setDtNasc(data(edtDtNasc.getText().toString()));
-                            c.setTelefone(edtTelefone.getText().toString());
-                            c.setTipo(spnTipo.getSelectedItem().toString());
-                            c.setEmail(edtEmail.getText().toString());
-
-                            ApiClient.INSTANCE.apiInterface().alteraContato(c).enqueue(new Callback<Contatos>() {
-                                @Override
-                                public void onResponse(Call<Contatos> call, Response<Contatos> response) {
-                                    if (response.code() == 200){
-                                        erro = "Ok";
-                                    }
-                                }
-
-                                @Override
-                                public void onFailure(Call<Contatos> call, Throwable t) {
-                                    AlertDialog alerta;
-                                    AlertDialog.Builder builder = new AlertDialog.Builder(AlteraContato.this);
-                                    builder.setTitle("Erro");
-                                    builder.setMessage(t.getMessage());
-                                    builder.setPositiveButton("Ok", null);
-                                    alerta = builder.create();
-                                    alerta.show();
-                                    alerta.dismiss();
-                                }
-                            });
-                            alert(erro);
-                            /*Intent intent = new Intent(AlteraContato.this, MainActivity.class);
-                            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                            startActivity(intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP));*/
-                        }
-                    } catch (ParseException e) {
-                        alert(e.getMessage());
-                    }
-
-            }
-
-        });
-    }
-
     private void initToolBar() {
         toolbar = (Toolbar) findViewById(R.id.toolbarCad);
         toolbar.setTitle(R.string.app_name);
@@ -149,6 +87,70 @@ public class AlteraContato extends AppCompatActivity {
                 Intent intent = new Intent(AlteraContato.this, MainActivity.class);
                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 startActivity(intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP));
+            }
+        });
+    }
+
+    private void addListenerOnButtonAlterar() {
+        Button btnAlterar = (Button) findViewById(R.id.btnAlterar);
+        btnAlterar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                AlertDialog alerta;
+                AlertDialog.Builder builder = new AlertDialog.Builder(AlteraContato.this);
+                builder.setTitle("Aviso");
+                builder.setMessage("Realmente deseja excluir o contato?");
+                builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        if (edtNome.length() == 0 || edtTelefone.length() == 0 || spnTipo.getSelectedItem() == "SELECIONE") {
+                            alert("Campos NOME, TELEFONE E TIPO não podem ser vazios");
+                        } else {
+                            try {
+                                if (!vD.valData(edtDtNasc.getText().toString())) {
+                                    edtDtNasc.setError("Informe uma data válida!");
+                                } else if (!vD.verificaVencimentoData(edtDtNasc.getText().toString())) {
+                                    edtDtNasc.setError("Data deve ser anterior ou igual a data atual!");
+                                } else if (edtEmail.getText().toString().length() != 0 && !vD.validaEmail(edtEmail.getText().toString())) {
+                                    edtEmail.setError("Informe um email válido!");
+                                } else if ((vD.valData(edtDtNasc.getText().toString()))
+                                        && (vD.verificaVencimentoData(edtDtNasc.getText().toString()))
+                                        && (vD.validaEmail(edtEmail.getText().toString()))) {
+                                    Contatos c = new Contatos();
+                                    c.setIdContato(Integer.parseInt(idContato));
+                                    c.setNome(edtNome.getText().toString());
+                                    c.setApelido(edtApelido.getText().toString());
+                                    c.setDtNasc(data(edtDtNasc.getText().toString()));
+                                    c.setTelefone(edtTelefone.getText().toString());
+                                    c.setTipo(spnTipo.getSelectedItem().toString());
+                                    c.setEmail(edtEmail.getText().toString());
+
+                                    ApiClient.INSTANCE.apiInterface().alteraContato(c).enqueue(new Callback<Contatos>() {
+                                        @Override
+                                        public void onResponse(Call<Contatos> call, Response<Contatos> response) {
+
+                                        }
+
+                                        @Override
+                                        public void onFailure(Call<Contatos> call, Throwable t) {
+
+                                        }
+                                    });
+                                    Intent intent = new Intent(AlteraContato.this, MainActivity.class);
+                                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                                    startActivity(intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP));
+                                }
+                            } catch (ParseException e) {
+                                alert(e.getMessage());
+                            }
+                        }
+                    }
+                }).setNegativeButton("Cancelar", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+
+                    }
+                });
+                alerta = builder.create();
+                alerta.show();
             }
         });
     }
@@ -167,22 +169,12 @@ public class AlteraContato extends AppCompatActivity {
                                 ApiClient.INSTANCE.apiInterface().delContato(Integer.parseInt(idContato)).enqueue(new Callback<Contatos>() {
                                     @Override
                                     public void onResponse(Call<Contatos> call, Response<Contatos> response) {
-                                        if(response.isSuccessful()){
-                                            alert(response.toString());
-                                        }
-                                        erro =+ response.code()+"\n"+response.raw()+"\n"+response.errorBody()+"\n"+response.errorBody();
+
                                     }
 
                                     @Override
                                     public void onFailure(Call<Contatos> call, Throwable t) {
-                                        AlertDialog alerta;
-                                        t.printStackTrace();
-                                        AlertDialog.Builder builder = new AlertDialog.Builder(AlteraContato.this);
-                                        builder.setTitle("Erro");
-                                        builder.setMessage(t.getMessage()+"\n"+erro);
-                                        builder.setPositiveButton("Ok", null);
-                                        alerta = builder.create();
-                                        alerta.show();
+
                                     }
                                 });
                                 Intent intent = new Intent(AlteraContato.this, MainActivity.class);
