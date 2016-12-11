@@ -99,7 +99,7 @@ public class AlteraContato extends AppCompatActivity {
                 AlertDialog alerta;
                 AlertDialog.Builder builder = new AlertDialog.Builder(AlteraContato.this);
                 builder.setTitle("Aviso");
-                builder.setMessage("Realmente deseja excluir o contato?");
+                builder.setMessage("Realmente deseja ALTERAR o contato?");
                 builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
                         if (edtNome.length() == 0 || edtTelefone.length() == 0 || spnTipo.getSelectedItem() == "SELECIONE") {
@@ -135,6 +135,7 @@ public class AlteraContato extends AppCompatActivity {
 
                                         }
                                     });
+                                    alert("Contato Alterado com sucesso!");
                                     Intent intent = new Intent(AlteraContato.this, MainActivity.class);
                                     intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                                     startActivity(intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP));
@@ -163,7 +164,7 @@ public class AlteraContato extends AppCompatActivity {
                 AlertDialog alerta;
                 AlertDialog.Builder builder = new AlertDialog.Builder(AlteraContato.this);
                 builder.setTitle("Aviso");
-                builder.setMessage("Realmente deseja excluir o contato?");
+                builder.setMessage("Realmente deseja EXCLUIR o contato?");
                 builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int id) {
                                 ApiClient.INSTANCE.apiInterface().delContato(Integer.parseInt(idContato)).enqueue(new Callback<Contatos>() {
@@ -177,6 +178,7 @@ public class AlteraContato extends AppCompatActivity {
 
                                     }
                                 });
+                                alert("Contato Excluído com sucesso!");
                                 Intent intent = new Intent(AlteraContato.this, MainActivity.class);
                                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                                 startActivity(intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP));
