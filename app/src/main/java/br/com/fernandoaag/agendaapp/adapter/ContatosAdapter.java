@@ -18,7 +18,9 @@ import java.util.List;
 import br.com.fernandoaag.agendaapp.R;
 import br.com.fernandoaag.agendaapp.model.Contatos;
 
-
+/**
+ * Classe responsável pelo preenchimento dos itens do RecyclerView
+ */
 public class ContatosAdapter extends RecyclerView.Adapter<ContatosAdapter.ViewHolder>{
 
     private final List<Contatos> contatosList;
@@ -32,18 +34,21 @@ public class ContatosAdapter extends RecyclerView.Adapter<ContatosAdapter.ViewHo
         this.callback = callback;
     }
 
+    //Onde é criada a ViewHolder e onde é inflada a View
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         final View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.list_item_contato, parent, false);
         return new ViewHolder(v, callback);
     }
 
+    //Metodo para popular a ViewHolder
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
         holder.bind(contatosList.get(position));
 
     }
 
+    //retorna a quantidade de itens da lista
     @Override
     public int getItemCount() {
         return contatosList.size();
@@ -53,6 +58,7 @@ public class ContatosAdapter extends RecyclerView.Adapter<ContatosAdapter.ViewHo
         void Item(int position, Contatos contatos);
     }
 
+    //Onde são passados os itens que aparecerão na View
     static class ViewHolder extends RecyclerView.ViewHolder{
         LinearLayout linearLayout;
         TextView nome;
@@ -71,7 +77,6 @@ public class ContatosAdapter extends RecyclerView.Adapter<ContatosAdapter.ViewHo
             tipo = (TextView) itemView.findViewById(R.id.txtTipo);
             imageView = (ImageView) itemView.findViewById(R.id.ic_phone);
 
-
             nome.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -83,6 +88,7 @@ public class ContatosAdapter extends RecyclerView.Adapter<ContatosAdapter.ViewHo
                 }
             });
 
+            //Listener da chamada
             imageView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -100,6 +106,7 @@ public class ContatosAdapter extends RecyclerView.Adapter<ContatosAdapter.ViewHo
             });
         }
 
+        //Metodo para setar os dados na View
         void bind(final Contatos contatos){
             this.contatos = contatos;
             nome.setText(contatos.getNome());

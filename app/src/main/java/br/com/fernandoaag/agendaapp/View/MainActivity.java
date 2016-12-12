@@ -28,6 +28,7 @@ public class MainActivity extends AppCompatActivity implements ContatosAdapter.C
     private RecyclerView recyclerView;
     Toolbar toolbar;
     String erro ="";
+    ContatosAdapter adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,7 +38,8 @@ public class MainActivity extends AppCompatActivity implements ContatosAdapter.C
         initToolBar();
 
         recyclerView = (RecyclerView) findViewById(R.id.recycler);
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        RecyclerView.LayoutManager layout = new LinearLayoutManager(MainActivity.this, LinearLayoutManager.VERTICAL, false);
+
 
         addListenerOnButtonConsultar();
         addListenerOnButtonNovo();
@@ -46,7 +48,7 @@ public class MainActivity extends AppCompatActivity implements ContatosAdapter.C
         request.enqueue(new Callback<List<Contatos>>() {
             @Override
             public void onResponse(Call<List<Contatos>> call, Response<List<Contatos>> response) {
-                final ContatosAdapter adapter = new ContatosAdapter(response.body());
+                /*ContatosAdapter*/ adapter = new ContatosAdapter(response.body());
                 adapter.setCallback(MainActivity.this);
                 recyclerView.setAdapter(adapter);
             }
@@ -55,11 +57,11 @@ public class MainActivity extends AppCompatActivity implements ContatosAdapter.C
             public void onFailure(Call<List<Contatos>> call, Throwable t) {
                 String erroTM = t.getMessage();
                 CharSequence csT = "null";
-                if(erroTM.contains(csT)){
+                /*if(erroTM.contains(csT)){
                     Intent intent = new Intent(MainActivity.this, MainActivity.class);
                     intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                     startActivity(intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP));
-                }else {
+                }else {*/
                     AlertDialog alerta;
                     AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
                     builder.setTitle("Erro");
@@ -72,9 +74,11 @@ public class MainActivity extends AppCompatActivity implements ContatosAdapter.C
                     builder.setPositiveButton("Ok", null);
                     alerta = builder.create();
                     alerta.show();
-                }
+                //}
             }
         });
+        //recyclerView.setAdapter(adapter);
+        recyclerView.setLayoutManager(layout);
     }
 
     @Override

@@ -11,7 +11,7 @@ import retrofit2.http.POST;
 import retrofit2.http.PUT;
 import retrofit2.http.Path;
 
-
+/*Interface que faz as chamadas dos metodos CRUD no webservice*/
 public interface ApiInterface {
     @GET("listaContatos")
     Call<List<Contatos>> listaContatos();

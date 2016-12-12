@@ -118,6 +118,7 @@ public class CriaContato extends AppCompatActivity{
                                     alerta.dismiss();
                                 }
                             });
+                            alert("Contato Criado com sucesso!");
                             Intent intent = new Intent(CriaContato.this, MainActivity.class);
                             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                             startActivity(intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP));
