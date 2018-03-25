@@ -87,7 +87,7 @@ public class ContatosAdapter extends RecyclerView.Adapter<ContatosAdapter.ViewHo
                     }
                 }
             });
-
+            //teste
             //Listener da chamada
             imageView.setOnClickListener(new View.OnClickListener() {
                 @Override
